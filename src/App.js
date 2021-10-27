@@ -134,7 +134,7 @@ export default function App() {
           Plugin type:
           <select
             value={type}
-            onChange={(e) => setState({ type: e.target.value })}
+            onChange={(e) => setState({ type: e.target.value, page: 0 })}
             className="shadow-md bg-gradient-to-b rounded-md px-1 border-gray-400 border"
           >
             {[
@@ -161,7 +161,7 @@ export default function App() {
           <input
             type="text"
             value={filter}
-            onChange={(e) => setState({ filter: e.target.value })}
+            onChange={(e) => setState({ filter: e.target.value, page: 0 })}
             className="shadow-md bg-gradient-to-b rounded-md px-1 border-gray-400 border"
           />
         </label>
@@ -169,7 +169,9 @@ export default function App() {
           <input
             type="checkbox"
             checked={includeOfficial}
-            onChange={(e) => setState({ includeOfficial: e.target.checked })}
+            onChange={(e) =>
+              setState({ includeOfficial: e.target.checked, page: 0 })
+            }
             className="shadow-md bg-gradient-to-b rounded-md px-1 border-gray-400 border"
           />
           Include offical Plugins
