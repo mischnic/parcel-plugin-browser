@@ -128,14 +128,14 @@ export default function App() {
   });
 
   return (
-    <div className="bg-white flex gap-2 flex-col items-center py-2">
-      <div className="flex gap-2">
+    <div className="flex gap-2 flex-col items-center p-2">
+      <div className="flex gap-2 flex-col md:flex-row">
         <label className="flex gap-1">
           Plugin type:
           <select
             value={type}
             onChange={(e) => setState({ type: e.target.value, page: 0 })}
-            className="shadow-md bg-gradient-to-b rounded-md px-1 border-gray-400 border"
+            className="shadow-md rounded-md px-1 border-gray-400 border"
           >
             {[
               "transformer",
@@ -162,7 +162,7 @@ export default function App() {
             type="text"
             value={filter}
             onChange={(e) => setState({ filter: e.target.value, page: 0 })}
-            className="shadow-md bg-gradient-to-b rounded-md px-1 border-gray-400 border"
+            className="shadow-md rounded-md px-1 border-gray-400 border"
           />
         </label>
         <label className="flex gap-1 items-center">
@@ -172,24 +172,24 @@ export default function App() {
             onChange={(e) =>
               setState({ includeOfficial: e.target.checked, page: 0 })
             }
-            className="shadow-md bg-gradient-to-b rounded-md px-1 border-gray-400 border"
+            className="shadow-md rounded-md px-1 border-gray-400 border"
           />
           Include offical Plugins
         </label>
       </div>
-      <div className="w-3xl">
+      <div className="max-w-3xl flex-1">
         {results?.hits.map((r, i) => (
           <div
             key={i}
             className="mx-auto my-4 w-full p-3 bg-white rounded-xl shadow-md gap-2 grid grid-cols-2 grid-rows-2"
           >
             <a
-              className="font-bold underline"
+              className="font-bold underline col-span-2 sm:col-span-1"
               href={`https://www.npmjs.com/package/${r.name}`}
             >
               {r.name}
             </a>
-            <div className="text-right text-gray-400">
+            <div className="text-right text-gray-400 col-span-2 sm:col-span-1">
               published{" "}
               {formatDistance(r.modified, new Date(), { addSuffix: true })},
               {r.humanDownloadsLast30Days} ⏬
