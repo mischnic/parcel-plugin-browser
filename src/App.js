@@ -29,14 +29,14 @@ export default function App() {
   });
 
   return (
-    <div className="flex gap-2 flex-col items-center p-2">
+    <div className="bg-white text-black dark:bg-gray-800 dark:text-white flex gap-2 flex-col items-center p-2 min-h-screen">
       <div className="flex gap-2 flex-col md:flex-row">
         <label className="flex gap-1">
           Plugin type:
           <select
             value={type}
             onChange={(e) => setState({ type: e.target.value, page: 0 })}
-            className="shadow-md bg-white rounded-md px-1 border-gray-400 border"
+            className="bg-white dark:bg-gray-800 shadow-md rounded-md px-1 border-gray-400 border"
           >
             {[
               "transformer",
@@ -63,7 +63,7 @@ export default function App() {
             type="text"
             value={filter}
             onChange={(e) => setState({ filter: e.target.value, page: 0 })}
-            className="shadow-md rounded-md px-1 border-gray-400 border"
+            className="bg-white dark:bg-gray-800 shadow-md rounded-md px-1 border-gray-400 border"
           />
         </label>
         <label className="flex gap-1 items-center">
@@ -80,27 +80,17 @@ export default function App() {
       </div>
       <div className="max-w-3xl flex-1">
         {results?.hits.map((r, i) => (
-          <div
+          <Result
             key={i}
-            className="mx-auto my-4 w-full p-3 bg-white rounded-xl shadow-md gap-2 grid grid-cols-2 grid-rows-2"
-          >
-            <a
-              className="font-bold underline col-span-2 sm:col-span-1"
-              href={`https://www.npmjs.com/package/${r.name}`}
-            >
-              {r.name}
-            </a>
-            <div className="text-right text-gray-400 col-span-2 sm:col-span-1">
-              published{" "}
-              {formatDistance(r.modified, new Date(), { addSuffix: true })},
-              {r.humanDownloadsLast30Days} ⏬
-            </div>
-            <div className="col-span-2">{r.description}</div>
-          </div>
+            name={r.name}
+            downloads={r.humanDownloadsLast30Days}
+            modified={r.modified}
+            description={r.description}
+          />
         ))}
         <div className="flex justify-center gap-2">
           <button
-            className="cursor-auto bg-gray-200 rounded-xl shadow-md px-1"
+            className="cursor-auto disabled:opacity-30 px-1"
             onClick={() => setState({ page: page - 1 })}
             disabled={page === 0}
           >
@@ -110,7 +100,7 @@ export default function App() {
             {page + 1} {results && `of ${results.nbPages}`}
           </span>
           <button
-            className="cursor-auto bg-gray-200 rounded-xl shadow-md px-1"
+            className="cursor-auto disabled:opacity-30 px-1"
             onClick={() => setState({ page: page + 1 })}
             disabled={results && page === results.nbPages - 1}
           >
@@ -118,6 +108,24 @@ export default function App() {
           </button>
         </div>
       </div>
+    </div>
+  );
+}
+
+function Result({ name, downloads, modified, description }) {
+  return (
+    <div className="bg-white dark:bg-gray-700 mx-auto my-4 w-full p-3 rounded-xl shadow-md gap-2 grid grid-cols-2 grid-rows-2">
+      <a
+        className="font-bold underline col-span-2 sm:col-span-1"
+        href={`https://www.npmjs.com/package/${name}`}
+      >
+        {name}
+      </a>
+      <div className="text-right text-gray-400 col-span-2 sm:col-span-1">
+        published {formatDistance(modified, new Date(), { addSuffix: true })},
+        {downloads} ⏬
+      </div>
+      <div className="col-span-2">{description}</div>
     </div>
   );
 }
