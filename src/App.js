@@ -17,7 +17,7 @@ export default function App() {
     () => {
       setDebouncedFilter(filter);
     },
-    400,
+    100,
     [filter]
   );
 
@@ -78,7 +78,7 @@ export default function App() {
           Include offical Plugins
         </label>
       </div>
-      <div className="max-w-3xl flex-1">
+      <div className="w-full md:w-3xl flex-1">
         {results?.hits.map((r, i) => (
           <Result
             key={i}
