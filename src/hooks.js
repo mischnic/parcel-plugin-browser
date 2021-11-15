@@ -8,7 +8,7 @@ export function useSearch({ type, page, filter, includeOfficial }) {
     let outdated = false;
 
     const searchParams = new URLSearchParams({
-      // "x-algolia-agent": "TS DT Fetch",
+      "x-algolia-agent": "parcel-plugin-browser",
       "x-algolia-application-id": "OFCNCOG2CU",
       "x-algolia-api-key": "f54e21fa3a2a0160595bb058179bfb1e",
     });
@@ -22,13 +22,13 @@ export function useSearch({ type, page, filter, includeOfficial }) {
         // https://github.com/algolia/npm-search#usage
         requests: [
           {
-            analyticsTags: ["typescriptlang.org/dt/search"],
+            analyticsTags: ["parcel-plugin-browser"],
             attributesToHighlight: ["name", "description", "keywords"],
-            //restrictSearchableAttributes: ["name"],
+            restrictSearchableAttributes: ["_searchInternal.alternativeNames"],
             attributesToRetrieve: [
               "isDeprecated",
               "description",
-              // "dependencies",
+              "dependencies",
               // "downloadsLast30Days",
               // "homepage",
               "humanDownloadsLast30Days",
@@ -49,7 +49,7 @@ export function useSearch({ type, page, filter, includeOfficial }) {
             maxValuesPerFacet: 10,
             page: page,
             params: "",
-            query: `parcel-${type}- ${filter}`,
+            query: `parcel-${type} ${filter}`,
             tagFilters: "",
           },
         ],
@@ -57,7 +57,14 @@ export function useSearch({ type, page, filter, includeOfficial }) {
     }).then(async (r) => {
       let json = await r.json();
       if (!outdated) {
-        setResult(json.results[0]);
+        let [results] = json.results;
+        if (type !== "config") {
+          results.hits = results.hits?.filter(
+            (r) => "@parcel/plugin" in r.dependencies
+          );
+        }
+        console.log(results);
+        setResult(results);
       }
     });
 
